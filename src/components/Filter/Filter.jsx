@@ -1,8 +1,7 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Input } from './FIlter.styled';
- const Id = nanoid();
+
 export class Filter extends Component {
 
 
