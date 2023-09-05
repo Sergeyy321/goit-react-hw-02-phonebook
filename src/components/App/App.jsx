@@ -1,9 +1,9 @@
 import { Filter } from 'components/Filter/Filter';
 import { Component } from 'react';
-import {Contacts } from 'components/Contacts/Contacts';
+import { Contacts } from 'components/Contacts/Contacts';
 import {Phonebook } from 'components/Phonebook/Phonebook';
 import { nanoid } from 'nanoid';
-
+import { ContactStyled} from './App.styled';
 export class App extends Component {
   state = {
     contacts: [
@@ -15,12 +15,14 @@ export class App extends Component {
     filter: '',
   };
 
-  onDelete = evt => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(el => el.name !== evt.target.value),
-      };
-    });
+  onDelete = contactId => {
+    this.setState(prev => ({
+      contacts: prev.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
+  onfilterChange = e => {
+    this.setState({ filter: e.currentTarget.value });
   };
 
   onAddContact = ({ name, number }) => {
@@ -40,26 +42,30 @@ export class App extends Component {
     }
   };
 
-  filterChange = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
   render() {
     const { contacts, filter } = this.state;
-    const contactsEl = this.state.contacts.filter(el =>
-      el.name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
+   
 
+    const lowercaseName = filter.toLowerCase();
+    const contactsEl =
+      this.state.filter !== ''
+        ? contacts.filter(contacts =>
+            contacts.name.toLowerCase().includes(lowercaseName)
+          )
+        : [];
     return (
-      <div>
+      <ContactStyled>
         <Phonebook onSubmit={this.onAddContact} />
-        <h2>Contacts</h2>
-        <Filter filter={filter} onfilterChange={this.filterChange} />
-        <Contacts
-          constacts={contactsEl}
-          onDelete={this.onDelete}
-          filteredName={filter}
-        />
-      </div>
+        <div>
+            <h2>Contacts</h2>
+          <Filter filter={filter} onfilterChange={this.onfilterChange} />
+          <Contacts
+            contacts={contactsEl}
+            onDelete={this.onDelete}
+            filteredName={filter}
+          />
+        </div>
+      </ContactStyled>
     );
   }
 }

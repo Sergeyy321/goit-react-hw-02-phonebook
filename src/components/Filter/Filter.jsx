@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
+import { Input } from './FIlter.styled';
  const Id = nanoid();
 export class Filter extends Component {
 
@@ -9,7 +10,7 @@ export class Filter extends Component {
         return (
           <div>
             <h2>Find contacts by name</h2>
-            <input
+            <Input
               id={this.Id}
               type="text"
               value={this.props.filter}
